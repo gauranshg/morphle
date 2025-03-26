@@ -84,3 +84,28 @@ p {
 .btn-reset:hover {
   background: #c0392b;
 }
+
+
+footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: #1e1e1e;
+  color: #cccccc;
+  text-align: center;
+  padding: 10px 0;
+  font-size: 0.9rem;
+  border-top: 1px solid #444;
+  z-index: 1000;
+}
+
+footer a {
+  color: #f39c12;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+footer a:hover {
+  color: #ffb84d;
+}

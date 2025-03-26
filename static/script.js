@@ -60,18 +60,16 @@ function toPixel(pos) {
       .then(data => {
         updateUI(data);
         // Determine next poll interval based on system state.
-        // When idle, poll less frequently (2000ms); otherwise, poll frequently (500ms).
-        let nextPollInterval = (data.state === "idle") ? 2000 : 500;
+        let nextPollInterval = (data.state === "idle") ? 1000 : 500;
         setTimeout(pollStatus, nextPollInterval);
       })
       .catch(err => {
         console.error("Error fetching status:", err);
-        // On error, try again after a delay.
         setTimeout(pollStatus, 2000);
       });
   }
   
-  // Immediately fetch and update UI (used after key events)
+  // Immediately fetch and update UI (used after key events and mouse clicks)
   function updateStatusNow() {
     fetch('/status')
       .then(response => response.json())
@@ -95,7 +93,6 @@ function toPixel(pos) {
     else if (event.key === "ArrowRight") direction = "right";
     
     if (direction) {
-      // Send the move command to the backend.
       fetch('/move', {
         method: 'POST',
         headers: {
@@ -106,10 +103,34 @@ function toPixel(pos) {
       .then(response => response.json())
       .then(data => {
         console.log("Move command result:", data);
-        // Immediately update the UI after the move command.
         updateStatusNow();
       });
     }
+  });
+  
+  // Listen for mouse clicks on the slide container to set target.
+  document.getElementById('slide').addEventListener('click', function(event) {
+    const slideRect = this.getBoundingClientRect();
+    const clickX = event.clientX - slideRect.left;
+    const clickY = event.clientY - slideRect.top;
+    
+    // Convert pixel coordinates to grid coordinates.
+    const gridX = Math.floor(clickX / 50);
+    const gridY = Math.floor(clickY / 50);
+    
+    // Send the target coordinates to the backend.
+    fetch('/set_target', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ x: gridX, y: gridY })
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log("Set target result:", data);
+      updateStatusNow();
+    });
   });
   
   // Reset button event listener.

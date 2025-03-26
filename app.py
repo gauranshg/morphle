@@ -172,6 +172,29 @@ def status():
             "visited": visited
         })
 
+@app.route('/set_target', methods=['POST'])
+def set_target():
+    """
+    Sets the target based on absolute grid coordinates sent from the front end.
+    Expects JSON payload with keys 'x' and 'y'.
+    """
+    global target, final_destination
+    data = request.json
+    x = data.get('x')
+    y = data.get('y')
+    
+    # Enforce grid boundaries.
+    if x is None or y is None or x < MIN_X or x > MAX_X or y < MIN_Y or y > MAX_Y:
+        return jsonify({"status": "ignored", "target_region": target})
+    
+    with lock:
+        target = {"x": x, "y": y}
+        final_destination = target.copy()
+        print("Target updated via mouse click:", target)
+    
+    return jsonify({"status": "target updated", "target_region": target})
+
+
 if __name__ == '__main__':
     worker_thread = threading.Thread(target=worker, daemon=True)
     worker_thread.start()
