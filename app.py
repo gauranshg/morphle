@@ -198,4 +198,6 @@ def set_target():
 if __name__ == '__main__':
     worker_thread = threading.Thread(target=worker, daemon=True)
     worker_thread.start()
-    app.run(debug=True)
+    # app.run(debug=True)
+    app.run(host="0.0.0.0", port=80, debug=True)
+

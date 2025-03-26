@@ -15,6 +15,7 @@ function toPixel(pos) {
   
   // Update the UI based on backend status data.
   function updateUI(data) {
+    console.log("Visited cells:", data.visited);
     const currentRegion = data.current_region;
     const target = data.target;
     const visited = data.visited;

@@ -1,51 +1,64 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-  <meta charset="UTF-8">
-  <title>Morphle Live Mode Scanner</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <meta charset="UTF-8">
+    <title>Morphle Live Mode Scanner</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
-<body>
-  <h1>Morphle Live Mode Scanner</h1>
-  <p>
+<h1>Morphle Live Mode Scanner</h1>
+<p>
     This system simulates a live mode scanner with the following features:
-  </p>
-  <ul>
-    <li>
-      <strong>Keyboard-based movement:</strong> Use arrow keys to update the target cell.
-    </li>
-    <li>
-      <strong>Mouse-click target:</strong> Click inside the slide to set the target point directly.
-    </li>
-    <li>
-      <strong>Real-time updates:</strong> Both the current position marker and the target marker update immediately after each key click or mouse click, and then continue updating at variable intervals based on activity.
-    </li>
-    <li>
-      <strong>Simulated machine movement:</strong> The system uses a simple <code>time.sleep</code> to simulate movement delays.
-    </li>
-    <li>
-      <strong>Speeding up over distance:</strong> When moving multiple blocks, the delay for each block is calculated using the formula:
-      <code>delay = 3 * sqrt(n) - 3 * sqrt(n - 1)</code>, where <em>n</em> is the block number. This means the first block takes 3 seconds, the second around 1.24 seconds, and so on.
-    </li>
-    <li>
-      <strong>Optimized path:</strong> The machine does not follow the exact path provided by user commands; it always finds the closest (minimal) path toward the final target block.
-    </li>
-  </ul>
-  <div id="slide">
-    <!-- Container for visited cells -->
-    <div id="visitedContainer"></div>
-    <!-- Target marker -->
-    <div id="targetMarker" class="cell"></div>
-    <!-- Marker for the current region -->
-    <div id="currentMarker" class="cell"></div>
-  </div>
-  <button class="btn-reset" id="resetButton">Reset System</button>
+</p>
 
-  <!-- Footer with creator info and LinkedIn link -->
-  <footer>
-    <p>Created by <a href="https://www.linkedin.com/in/gauranshg" target="_blank">Gauransh Gupta</a></p>
-  </footer>
+<body>
+    <div class="about">
 
-  <script src="{{ url_for('static', filename='script.js') }}"></script>
+        <ul>
+            <li>
+                <strong>Keyboard-based movement:</strong> Use arrow keys to update the target cell.
+            </li>
+            <li>
+                <strong>Mouse-click target:</strong> Click inside the slide to set the target point directly.
+            </li>
+            <li>
+                <strong>Real-time updates:</strong> Both the current position marker and the target marker update
+                immediately after each key click or mouse click, and then continue updating at variable intervals based
+                on activity.
+            </li>
+            <li>
+                <strong>Simulated machine movement:</strong> The system uses a simple <code>time.sleep</code> to
+                simulate movement delays.
+            </li>
+            <li>
+                <strong>Speeding up over distance:</strong> When moving multiple blocks, the delay for each block is
+                calculated using the formula:
+                <code>delay = 3 * sqrt(n) - 3 * sqrt(n - 1)</code>, where <em>n</em> is the block number. This means the
+                first block takes 3 seconds, the second around 1.24 seconds, and so on.
+            </li>
+            <li>
+                <strong>Optimized path:</strong> The machine does not follow the exact path provided by user commands;
+                it always finds the closest (minimal) path toward the final target block.
+            </li>
+        </ul>
+    </div>
+    <br>
+    <div id="slide">
+        <!-- Container for visited cells -->
+        <div id="visitedContainer"></div>
+        <!-- Target marker -->
+        <div id="targetMarker" class="cell"></div>
+        <!-- Marker for the current region -->
+        <div id="currentMarker" class="cell"></div>
+    </div>
+    <button class="btn-reset" id="resetButton">Reset System</button>
+
+    <!-- Footer with creator info and LinkedIn link -->
+    <footer>
+        <p>Created by <a href="https://www.linkedin.com/in/gauranshg" target="_blank">Gauransh Gupta</a></p>
+    </footer>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
+
 </html>
