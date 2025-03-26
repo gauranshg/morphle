@@ -61,7 +61,7 @@ function toPixel(pos) {
       .then(data => {
         updateUI(data);
         // Determine next poll interval based on system state.
-        let nextPollInterval = (data.state === "idle") ? 1000 : 500;
+        let nextPollInterval = (data.state === "idle") ? 500 : 100;
         setTimeout(pollStatus, nextPollInterval);
       })
       .catch(err => {
