@@ -22,8 +22,8 @@ This project simulates a grid-based navigation system where a moving marker find
 ### Running Locally with Flask
 1. Clone the repository:
    ```sh
-   git clone https://github.com/your-repo/grid-navigation
-   cd grid-navigation
+   git clone https://github.com/gauranshg/morphle.git
+   cd morphle
    ```
 2. Install dependencies:
    ```sh
