@@ -3,113 +3,23 @@
 <head>
   <meta charset="UTF-8">
   <title>Morphle Live Mode Scanner</title>
-  <style>
-    /* Slide dimensions: 750px by 250px */
-    #slide {
-      width: 750px;
-      height: 250px;
-      border: 2px solid black;
-      position: relative;
-      margin: 20px;
-    }
-    /* Each cell is 50px by 50px */
-    .cell {
-      width: 50px;
-      height: 50px;
-      position: absolute;
-      box-sizing: border-box;
-    }
-    /* The starting cell (0,0) gets a persistent black border */
-    .start {
-      border: 2px solid black;
-    }
-    /* Marker for the current cell (blue dashed border) */
-    #currentMarker {
-      border: 2px dashed blue;
-    }
-  </style>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
   <h1>Morphle Live Mode Scanner</h1>
   <p>
     Use the arrow keys to move the camera. Moves update the target cell.
-    The worker always takes the minimal step from the current cell toward the target.
-    If commands cancel each other out, the effective (net) target is closer.
+    The worker takes minimal steps toward the final destination, only capturing the final cell.
   </p>
   <div id="slide">
     <!-- Container for visited cells -->
     <div id="visitedContainer"></div>
+    <!-- Target marker -->
+    <div id="targetMarker" class="cell"></div>
     <!-- Marker for the current region -->
     <div id="currentMarker" class="cell"></div>
   </div>
-
-  <script>
-    // Listen for arrow key events.
-    document.addEventListener('keydown', function(event) {
-      let direction = null;
-      if (event.key === "ArrowUp") direction = "up";
-      else if (event.key === "ArrowDown") direction = "down";
-      else if (event.key === "ArrowLeft") direction = "left";
-      else if (event.key === "ArrowRight") direction = "right";
-      
-      if (direction) {
-        // Send the move command to the backend.
-        fetch('/move', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ direction: direction })
-        })
-        .then(response => response.json())
-        .then(data => {
-          console.log("Move command result:", data);
-        });
-      }
-    });
-
-    // Utility function: convert grid coordinate to pixel position.
-    function toPixel(pos) {
-      return pos * 50;  // each cell is 50px
-    }
-
-    // Poll backend status every 500ms.
-    setInterval(function() {
-      fetch('/status')
-        .then(response => response.json())
-        .then(data => {
-          const currentRegion = data.current_region;
-          const target = data.target;
-          const visited = data.visited;
-          const currentMarker = document.getElementById('currentMarker');
-          // Update current marker position.
-          currentMarker.style.left = toPixel(currentRegion.x) + 'px';
-          currentMarker.style.top = toPixel(currentRegion.y) + 'px';
-          
-          // Render visited cells.
-          const container = document.getElementById('visitedContainer');
-          for (let key in visited) {
-            if (visited.hasOwnProperty(key)) {
-              let [x, y] = key.split(',').map(Number);
-              let color = visited[key];
-              let cellId = 'cell-' + key;
-              let cellDiv = document.getElementById(cellId);
-              if (!cellDiv) {
-                cellDiv = document.createElement('div');
-                cellDiv.id = cellId;
-                cellDiv.className = 'cell';
-                cellDiv.style.left = toPixel(x) + 'px';
-                cellDiv.style.top = toPixel(y) + 'px';
-                if (x === 0 && y === 0) {
-                  cellDiv.classList.add('start');
-                }
-                container.appendChild(cellDiv);
-              }
-              cellDiv.style.backgroundColor = color;
-            }
-          }
-        });
-    }, 500);
-  </script>
+  <button class="btn-reset" id="resetButton">Reset System</button>
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>
